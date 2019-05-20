@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>{% block title %}Login!{% endblock %}</title>
+        {% block stylesheets %}
+            <link rel="stylesheet" type="text/css" href="{{ asset('dist/css/main.css') }}" />
+            <link rel="stylesheet" type="text/css" href="{{ asset('dist/css/font-awesome/4.7.0/css/font-awesome.min.css') }}"/>
+        {% endblock %}
+    </head>
+    <body class="app sidebar-mini rtl">
+     <section class="material-half-bg">
+     <div class="cover"></div>
+    </section>
+    <section class="login-content">
+      <div class="logo">
+        <h1>My CRM</h1>
+      </div>
+      <div class="login-box">
+        <form class="login-form" method="POST">
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+          <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>{{ 'Login' }}</h3>
+          <div class="form-group">
+            <label class="control-label">{{ 'E-Mail Address' }}</label>
+                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control @error('email') is-invalid @enderror"  placeholder="Email" required autofocus>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label">{{ 'Password' }}</label>
+           <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+
+          </div>
+        <input type="hidden" name="_csrf_token"  value="{{ csrf_token('authenticate') }}">
+          <div class="form-group btn-container">
+            <button class="btn btn-primary btn-block" type="submit" ><i class="fa fa-sign-in fa-lg fa-fw"></i>{{ 'Login' }}</button>
+          </div>
+        </form>
+      </div>
+    </section>
+        {% block javascripts %}
+            <script src="{{ asset('dist/js/jquery-3.2.1.min.js') }}"></script>
+            <script src="{{ asset('dist/js/popper.min.js') }}"></script>
+            <script src="{{ asset('dist/js/bootstrap.min.js') }}"></script>
+            <script src="{{ asset('dist/js/main.js') }}"></script>
+            <script src="{{ asset('dist/js/plugins/pace.min.js') }}"></script>
+        {% endblock %}
+    </body>
+</html>

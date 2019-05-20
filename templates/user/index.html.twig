@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User index{% endblock %}
+
+{% block body %}
+    <div class="app-title">
+        <div>
+            <h1><i class="fa fa-users"></i> Utilisateurs</h1>
+        </div>
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path("home") }}"><i class="fa fa-home fa-lg"></i></a></li>
+            <li class="breadcrumb-item"><a href="{{ path("user_index") }}">Utilisateurs</a></li>
+        </ul>
+    </div>
+<div class="tile">
+    <div class="row">
+        <div class="col-sm-8"><h3 class="tile-title">Liste des utilisateurs</h3></div>
+        <div class="col-sm-4 text-right">    <a class="btn btn-primary" href="{{ path('user_new') }}">Create new</a></div>
+
+    </div>
+<div class="row">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Tel1</th>
+                <th>Tel2</th>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>Acitver</th>
+                <th>Pays</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.nom }}</td>
+                <td>{{ user.prenom }}</td>
+                <td>{{ user.tel1 }}</td>
+                <td>{{ user.tel2 }}</td>
+
+                <td>{{ user.email }}</td>
+                <td>{{ user.roles ? user.roles|join(', ') : '' }}</td>
+                <td>{{ user.isActive ? 'Oui' : 'Non' }}</td>
+                <td>{{ user.pays }}</td>
+                <td>
+                    <a href="{{ path('user_edit', {'id': user.id}) }}" title="Editer"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                    <a href="{{ path('user_show', {'id': user.id}) }}" title="Afficher"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New User{% endblock %}
+
+{% block body %}
+    <div class="app-title">
+        <div>
+            <h1><i class="fa fa-users"></i> Utilisateurs</h1>
+        </div>
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path("home") }}"><i class="fa fa-home fa-lg"></i></a></li>
+            <li class="breadcrumb-item"><a href="{{ path("user_index") }}">Utilisateurs</a></li>
+            <li class="breadcrumb-item"><a href="{{ path("user_new") }}">Ajouter Utilisateur</a></li>
+        </ul>
+    </div>
+    <div class="tile">
+{{ form_start(form) }}
+        <div class="row">
+            <div class="col-sm-8"><h3 class="tile-title">Liste des utilisateurs</h3></div>
+            <div class="col-sm-4 text-right">
+                <button class="btn btn-success">{{ button_label|default('Enregistrer') }}</button>
+                <a class="btn btn-primary" href="{{ path('user_index') }}">Back to list</a></div>
+
+        </div>
+
+    <div class="row">
+        <div class="col-md-6"></div>
+        <div class="col-md-6"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">{{ form_row(form.nom) }}</div>
+        <div class="col-md-6">{{ form_row(form.prenom) }}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">{{ form_row(form.email) }}</div>
+        <div class="col-md-6">{{ form_row(form.password) }}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">{{ form_row(form.tel1) }}</div>
+        <div class="col-md-6">{{ form_row(form.tel2) }}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">{{ form_row(form.pays) }}</div>
+        <div class="col-md-6">{{ form_row(form.isActive) }}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">{{ form_row(form.roles) }}</div>
+    </div>
+
+    {{ form_end(form) }}
+    </div>
+{% endblock %}
