@@ -2,8 +2,12 @@
 <aside class="app-sidebar">
     <div class="app-sidebar__user">
         <div>
-            <p class="app-sidebar__user-name">John Doe</p>
-            <p class="app-sidebar__user-designation">Frontend Developer</p>
+            <p class="app-sidebar__user-name">{{ app.user.nom }}</p>
+            <p class="app-sidebar__user-designation">
+                {% for role in app.user.roles %}
+                    {{ role | trans({},"forms") }}<br>
+                {% endfor %}
+            </p>
         </div>
     </div>
     <ul class="app-menu">
@@ -20,10 +24,10 @@
             </a>
             <ul class="treeview-menu">
                 <li>
-                    <a class="treeview-item" href="{{ path("user_index") }}"><i class="icon fa fa-list"></i> Users</a>
+                    <a class="treeview-item" href="{{ path("user_index") }}"><i class="icon fa fa-list"></i> Utilisateurs</a>
                 </li>
                 <li>
-                    <a class="treeview-item" href="#"><i class="icon fa fa-user-plus"></i> Add User</a>
+                    <a class="treeview-item" href="{{ path("user_new") }}"><i class="icon fa fa-user-plus"></i> Nouveau utilisateur</a>
                 </li>
             </ul>
         </li>

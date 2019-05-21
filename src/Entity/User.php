@@ -4,9 +4,12 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity("email")
  */
 class User implements UserInterface
 {
@@ -22,16 +25,18 @@ class User implements UserInterface
      */
     private $nom;
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255,nullable=false)
      */
     private $prenom;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255,nullable=false)
+     * @Assert\Regex(pattern="/^[0-9]{8}$/", message="Le numéro de téléphone doit contenir 8 chiffres")
      */
     private $tel1;
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Regex(pattern="/^[0-9]{8}$/", message="Le numéro de téléphone doit contenir 8 chiffres")
      */
     private $tel2;
 
@@ -46,7 +51,12 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255,nullable=false,unique=true)
+     * @Assert\Email(
+     *     message = "Le mail '{{ value }}' n'est pas email valide.",
+     *     checkMX = true
+     * )
+     *
      */
     private $email;
 

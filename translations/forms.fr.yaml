@@ -1,2 +1,5 @@
 Roles: Rôle
 Is active: Activer
+ROLE_ADMIN: Admin
+ROLE_COMMERCIAL: Commerciale
+ROLE_TELEOPERATOR: Téléopérateur

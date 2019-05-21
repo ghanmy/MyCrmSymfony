@@ -36,6 +36,14 @@
           </div>
         <input type="hidden" name="_csrf_token"  value="{{ csrf_token('authenticate') }}">
           <div class="form-group btn-container">
+              <div class="utility">
+                  <div class="animated-checkbox">
+                      <label>
+                          <input type="checkbox" id="remember_me" name="_remember_me" checked><span class="label-text">Se souvenir de moi</span>
+                      </label>
+                  </div>
+                  <p class="semibold-text mb-2"><a href="#" data-toggle="flip">Mot de passe oublié ?</a></p>
+              </div>
             <button class="btn btn-primary btn-block" type="submit" ><i class="fa fa-sign-in fa-lg fa-fw"></i>{{ 'Login' }}</button>
           </div>
         </form>
