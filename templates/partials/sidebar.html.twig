@@ -16,7 +16,7 @@
                 <span class="app-menu__label">Accueil</span>
             </a>
         </li>
-        {% if is_granted('ROLE_ADMIN') %}
+
         <li class="treeview">
             <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-users"></i>
                 <span class="app-menu__label">Utilisateurs</span>
@@ -31,11 +31,40 @@
                 </li>
             </ul>
         </li>
-        {% endif %}
+
+        <li class="treeview">
+            <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-users"></i>
+                <span class="app-menu__label">Prospects</span>
+                <i class="treeview-indicator fa fa-angle-right"></i>
+            </a>
+        <ul class="treeview-menu">
+            <li>
+                <a class="treeview-item" href="{{ path("prospect_index") }}"><i class="icon fa fa-list"></i>Liste des prospects</a>
+            </li>
+            <li>
+                <a class="treeview-item" href="{{ path("prospect_new") }}"><i class="icon fa fa-user-plus"></i> Nouveau prospect</a>
+            </li>
+        </ul>
+        </li>
+        <li class="treeview">
+            <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-phone"></i>
+                <span class="app-menu__label">Appels</span>
+                <i class="treeview-indicator fa fa-angle-right"></i>
+            </a>
+            <ul class="treeview-menu">
+                <li>
+                    <a class="treeview-item" href="{{ path("calls_index") }}"><i class="icon fa fa-phone"></i>Liste des appels</a>
+                </li>
+                <li>
+                    <a class="treeview-item" href="{{ path("calls_index") }}"><i class="icon fa fa-plus"></i>Nouveau appel</a>
+                </li>
+            </ul>
         <li>
             <a class="app-menu__item" href="#"><i class="app-menu__icon fa fa-cogs"></i>
                 <span class="app-menu__label">Settings</span>
             </a>
         </li>
+    </ul>
+
     </ul>
 </aside>

@@ -14,8 +14,10 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            pattern: ^/
-            anonymous: ~
+            provider: from_database
+            #pattern: ^/
+            switch_user: true
+            anonymous: true
             form_login:
                 login_path: /login
                 check_path: login
@@ -39,6 +41,8 @@ security:
         ROLE_ADMIN:       [ROLE_TELEOPERATOR, ROLE_COMMERCIAL, ROLE_USER]
     access_control:
         - { path: ^/login$, roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
+        - { path: ^/forgotten_password, roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
+        - { path: ^/reset_password, roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
         - { path: ^/, roles: [IS_AUTHENTICATED_REMEMBERED ] }
        # - { path: ^/user/, roles: [ROLE_ADMIN] }
         # - { path: ^/users, roles: [ROLE_ADMIN] }

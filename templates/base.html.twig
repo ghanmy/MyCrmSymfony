@@ -5,9 +5,14 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}    
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('dist/css/bootsrap.min.css') }}" />
+            <link rel="stylesheet" type="text/css" href="{{ asset('dist/css/plugins/gijgo.min.css') }}" />
             <link rel="stylesheet" type="text/css" href="{{ asset('dist/css/main.css') }}" />
+            <link rel="stylesheet" type="text/css" href="{{ asset('dist/css/custom.css') }}" />
             <link rel="stylesheet" type="text/css" href="{{ asset('dist/css/font-awesome/4.7.0/css/font-awesome.min.css') }}"/>
+            <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.2.1/dt-1.10.16/datatables.min.css"/>
+
         {% endblock %}
     </head>
     <body class="app sidebar-mini rtl">
@@ -15,7 +20,7 @@
         {{ include("partials/sidebar.html.twig") }}
         <main class="app-content">
             {% block body %}
-            
+
             {% endblock %}
         </main>
         {% block javascripts %}
@@ -24,7 +29,13 @@
             <script src="{{ asset('dist/js/bootstrap.min.js') }}"></script>
             <script src="{{ asset('dist/js/main.js') }}"></script>
             <script src="{{ asset('dist/js/plugins/pace.min.js') }}"></script>
+
+            <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.2.1/dt-1.10.16/datatables.min.js"></script>
+
+            <script src="{{ asset('bundles/datatables/js/datatables.js') }}"></script>
         {% endblock %}
-        
+        {% block custompage_script %}
+
+        {% endblock %} {# custompage_script #}
     </body>
 </html>

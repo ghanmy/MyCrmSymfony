@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New User{% endblock %}
+{% block title %}Nouveau utilsateur{% endblock %}
 
 {% block body %}
     <div class="app-title">
@@ -14,39 +14,32 @@
         </ul>
     </div>
     <div class="tile">
-{{ form_start(form) }}
-        <div class="row">
+        {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+        <div class="row mb-4">
             <div class="col-sm-8"><h3 class="tile-title">Liste des utilisateurs</h3></div>
             <div class="col-sm-4 text-right">
                 <button class="btn btn-success">{{ button_label|default('Enregistrer') }}</button>
-                <a class="btn btn-primary" href="{{ path('user_index') }}">Utilisateurs</a></div>
-
+            </div>
         </div>
-
-    <div class="row">
-        <div class="col-md-6"></div>
-        <div class="col-md-6"></div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">{{ form_row(form.nom) }}</div>
-        <div class="col-md-6">{{ form_row(form.prenom) }}</div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">{{ form_row(form.email) }}</div>
-        <div class="col-md-6">{{ form_row(form.password) }}</div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">{{ form_row(form.tel1) }}</div>
-        <div class="col-md-6">{{ form_row(form.tel2) }}</div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">{{ form_row(form.pays) }}</div>
-        <div class="col-md-6">{{ form_row(form.isActive) }}</div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">{{ form_row(form.roles) }}</div>
-    </div>
-
+        <div class="form-row justify-content-end">
+            <div class="col-sm-6">{{ form_row(form.nom) }}</div>
+            <div class="col-sm-6">{{ form_row(form.prenom) }}</div>
+        </div>
+        <div class="form-row justify-content-end">
+            <div class="col-sm-6">{{ form_row(form.email,{'attr': {'class': 'form-control'}}) }}</div>
+            <div class="col-sm-6">{{ form_row(form.password) }}</div>
+        </div>
+        <div class="form-row justify-content-end">
+            <div class="col-sm-6">{{ form_row(form.tel1) }}</div>
+            <div class="col-sm-6">{{ form_row(form.tel2) }}</div>
+        </div>
+        <div class="form-row justify-content-end">
+            <div class="col-sm-6">{{ form_row(form.pays) }}</div>
+            <div class="col-sm-6 mt-4">{{ form_row(form.isActive) }}</div>
+        </div>
+        <div class="form-row justify-content-end">
+            <div class="col-sm-12">{{ form_row(form.roles) }}</div>
+        </div>
     {{ form_end(form) }}
     </div>
 {% endblock %}

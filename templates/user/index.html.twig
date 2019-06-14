@@ -23,6 +23,21 @@
                     {{ message }}
                 </div>
             {% endfor %}
+            <div class="row">
+
+                    {{ form_start(form)}}
+                    <div class="form-row align-items-end">
+                    <div class="col-">{{ form_row(form.name) }}</div>
+                    <div class="col">{{ form_row(form.prenom) }}</div>
+                    <div class="col">{{ form_row(form.email) }}</div>
+                    <div class="col">
+                        <div class="form-group"> <button class="btn btn-default" >Rechercher</button></div>
+
+                    </div>
+                    </div>
+                    {{ form_end(form) }}
+
+            </div>
             <div class="table-responsive">
             <table class="table table-striped">
                 <thead class="thead-dark">
@@ -66,9 +81,9 @@
                 {% endfor %}
                 </tbody>
             </table>
-                <div class="navigation">
-                    {{ knp_pagination_render(users) }}
-                </div>
+            <div class="navigation">
+                {{ knp_pagination_render(users) }}
+            </div>
         </div>
     </div>
 </div>

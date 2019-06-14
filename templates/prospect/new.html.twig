@@ -1,0 +1,119 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau Prospect{% endblock %}
+
+{% block body %}
+    <div class="app-title">
+        <div>
+            <h1><i class="fa fa-user-tie"></i>Nouveau prospect</h1>
+        </div>
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path("home") }}"><i class="fa fa-home fa-lg"></i></a></li>
+            <li class="breadcrumb-item"><a href="{{ path("prospect_index") }}">Prospects</a></li>
+            <li class="breadcrumb-item"><a href="{{ path("prospect_new") }}">Ajouter Prospect</a></li>
+        </ul>
+    </div>
+    <div class="tile">
+        {{ form_start(form) }}
+        <div class="row mb-4">
+            <div class="col-sm-8"><h3 class="tile-title">Liste des prospects</h3></div>
+            <div class="col-sm-4 text-right">
+                <button class="btn btn-success">{{ button_label|default('Enregistrer') }}</button>
+            </div>
+        </div>
+            <div class="form-row justify-content-end">
+                <div class="col-sm-6">{{ form_row(form.name) }}</div>
+                <div class="col-sm-6">{{ form_row(form.type) }}</div>
+            </div>
+            <div class="form-row justify-content-end">
+                <div class="col-sm-6">{{ form_row(form.email) }}</div>
+                <div class="col-sm-6">{{ form_row(form.address) }}</div>
+            </div>
+            <div class="form-row justify-content-end">
+                <div class="col-sm-6">{{ form_row(form.tvacode) }}</div>
+                <div class="col-sm-6"></div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6 col-sm-12">
+                    {{ form_label(form.contacts, 'Liste de contacts') }}
+                    <ul  class="contacts" data-prototype="{{ form_widget(form.contacts.vars.prototype)|e('html_attr') }}">
+
+                    </ul>
+
+                </div>
+            </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+{% block custompage_script %}
+<script>
+
+    var $collectionHolder;
+
+    //setup an "add a tag" link
+    var $addContactButton = $('<button type="button" class="btn btn-default pull-left">Ajouter contact</button>');
+    var $newLinkLi = $('<li></li>').append($addContactButton);
+
+    jQuery(document).ready(function() {
+        // Get the ul that holds the collection of tags
+        $collectionHolder = $('ul.contacts');
+        //add a delete link to all of the existing tag form li elements
+        $collectionHolder.find('ul').each(function() {
+            addTodoFormDeleteLink($(this));
+        });
+        // add the "add a tag" anchor and li to the tags ul
+        $collectionHolder.append($newLinkLi);
+
+        // count the current form inputs we have (e.g. 2), use that as the new
+        // index when inserting a new item (e.g. 2)
+        $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+        $addContactButton.on('click', function(e) {
+            // add a new tag form (see next code block)
+            addTodoForm($collectionHolder, $newLinkLi);
+        });
+    });
+
+    function addTodoForm($collectionHolder, $newLinkLi) {
+        // Get the data-prototype explained earlier
+        var prototype = $collectionHolder.data('prototype');
+
+        // get the new index
+        var index = $collectionHolder.data('index');
+
+        var newForm = prototype;
+        // You need this only if you didn't set 'label' => false in your tags field in TaskType
+        // Replace '__name__label__' in the prototype's HTML to
+        // instead be a number based on how many items we have
+        // newForm = newForm.replace(/__name__label__/g, index);
+
+        // Replace '__name__' in the prototype's HTML to
+        // instead be a number based on how many items we have
+        newForm = newForm.replace(/__name__/g, index);
+
+        // increase the index with one for the next item
+        $collectionHolder.data('index', index + 1);
+
+        // Display the form in the page in an li, before the "Add a tag" link li
+        var $newFormLi = $('<li></li>').prepend(newForm);
+        // add a delete link to the new form
+        addTodoFormDeleteLink($newFormLi,index);
+        $newLinkLi.before($newFormLi);
+
+    }
+
+    function addTodoFormDeleteLink($todoFormLi,$comp) {
+        var $removeFormButton = $('<h6 class="d-inline">Contact '+$comp+' </h6> <a class="btn btn-danger align-items-end" href="#"><i class="icon fa fa-trash"></i></a>');
+        $todoFormLi.prepend($removeFormButton);
+
+        $removeFormButton.on('click', function(e) {
+            e.preventDefault()
+            // remove the li for the todo form
+            $todoFormLi.remove();
+        });
+    }
+
+
+</script>
+{% endblock %} {# custompage_script #}
+

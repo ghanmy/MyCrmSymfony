@@ -8837,6 +8837,7 @@ a.text-dark:hover, a.text-dark:focus {
   }
   body {
     min-width: 992px !important;
+    font-family: 'Roboto','Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif;
   }
   .container {
     min-width: 992px !important;
@@ -12493,7 +12494,7 @@ be a descendant of the grid when it is being dragged.
     margin-left: 0;
   }
   .app.sidenav-toggled .app-sidebar {
-    left: -230px;
+    left: -170px;
   }
   .app.sidenav-toggled .app-sidebar__overlay {
     visibility: hidden;
@@ -12505,7 +12506,7 @@ be a descendant of the grid when it is being dragged.
     overflow-x: hidden;
   }
   .app .app-sidebar {
-    left: -230px;
+    left: -170px;
   }
   .app .app-sidebar__overlay {
     visibility: hidden;
@@ -12525,7 +12526,7 @@ be a descendant of the grid when it is being dragged.
   min-height: calc(100vh - 50px);
   margin-top: 50px;
   padding: 30px;
-  background-color: #E5E5E5;
+  background-color: #ececec;
   -webkit-transition: margin-left 0.3s ease;
   -o-transition: margin-left 0.3s ease;
   transition: margin-left 0.3s ease;
@@ -12533,7 +12534,7 @@ be a descendant of the grid when it is being dragged.
 
 @media (min-width: 768px) {
   .app-content {
-    margin-left: 230px;
+    margin-left: 170px;
   }
 }
 
@@ -12618,7 +12619,7 @@ be a descendant of the grid when it is being dragged.
     -ms-flex: 0 0 auto;
     flex: 0 0 auto;
     display: block;
-    width: 230px;
+    width: 170px;
     background-color: #007d71;
   }
 }
@@ -12812,7 +12813,7 @@ be a descendant of the grid when it is being dragged.
   bottom: 0;
   left: 0;
   padding-top: 70px;
-  width: 230px;
+  width: 170px;
   overflow: auto;
   z-index: 10;
   background-color: #222d32;
