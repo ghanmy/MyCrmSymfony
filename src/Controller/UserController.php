@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\UserSearch;
+use App\Form\UserSearchType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Knp\Component\Pager\PaginatorInterface;
@@ -18,17 +20,21 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/", name="user_index", methods={"GET"})
+     * @Route("/", name="user_index", methods={"GET","POST"})
      */
     public function index(PaginatorInterface $paginator,UserRepository $userRepository,Request $request): Response
     {
+        $search = new UserSearch();
+        $form = $this->createForm(UserSearchType::class,$search);
+        $form->handleRequest($request);
         $pagination = $paginator->paginate(
-            $userRepository->findAllQuery(), /* query NOT result */
+            $userRepository->findAllQuery($search), /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/
             3 /*limit per page*/
         );
         return $this->render('user/index.html.twig', [
             'users' => $pagination,
+            'form'=> $form->createView()
         ]);
     }
 
@@ -78,9 +84,9 @@ class UserController extends AbstractController
      */
     public function edit(Request $request, User $user): Response
     {
-        $form = $this->createForm(UserType::class, $user)->remove('password');;
-        $form->handleRequest($request);
+        $form = $this->createForm(UserType::class, $user)->remove('password');
 
+        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->addFlash('success','Utilisateur modifié avec succès');
             $this->getDoctrine()->getManager()->flush();

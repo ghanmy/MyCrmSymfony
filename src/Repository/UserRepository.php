@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use App\Entity\UserSearch;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -37,21 +38,32 @@ class UserRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?User
+
+    public function findOneByEmail($value): ?User
     {
         return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
+            ->andWhere('u.email = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
-    */
-    public function findAllQuery(): Query
+
+    public function findAllQuery(UserSearch $search): Query
     {
-        return $this->createQueryBuilder('u')
-            ->getQuery();
+        $query = $this->createQueryBuilder('u');
+        if($search->getName())
+        $query = $query->andWhere('u.nom LIKE :username')
+                ->setParameter('username', '%'.$search->getName().'%');
+        if($search->getPrenom())
+            $query = $query->andWhere('u.prenom LIKE :userprenom')
+                ->setParameter('userprenom', '%'.$search->getPrenom().'%');
+        if($search->getEmail())
+            $query = $query->andWhere('u.email LIKE :useremail')
+                ->setParameter('useremail', '%'.$search->getEmail().'%');
+            
+        return $query->getQuery();
+                       
     }
 
 }

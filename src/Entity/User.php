@@ -3,15 +3,16 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
+use InvalidArgumentException;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity("email")
  */
-class User implements UserInterface
+class User implements UserInterface, \Serializable
 {
     /**
      * @ORM\Id()
@@ -21,37 +22,37 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=191)
      */
     private $nom;
     /**
-     * @ORM\Column(type="string", length=255,nullable=false)
+     * @ORM\Column(type="string", length=191,nullable=false)
      */
     private $prenom;
 
     /**
-     * @ORM\Column(type="string", length=255,nullable=false)
+     * @ORM\Column(type="string", length=191,nullable=false)
      * @Assert\Regex(pattern="/^[0-9]{8}$/", message="Le numéro de téléphone doit contenir 8 chiffres")
      */
     private $tel1;
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=191)
      * @Assert\Regex(pattern="/^[0-9]{8}$/", message="Le numéro de téléphone doit contenir 8 chiffres")
      */
     private $tel2;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=191)
      */
     private $pays;
 
     /**
-     * @ORM\Column(type="string", length=600)
+     * @ORM\Column(type="string", length=191)
      */
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=255,nullable=false,unique=true)
+     * @ORM\Column(type="string", length=191,nullable=false,unique=true)
      * @Assert\Email(
      *     message = "Le mail '{{ value }}' n'est pas email valide.",
      *     checkMX = true
@@ -69,6 +70,12 @@ class User implements UserInterface
      * @ORM\Column(name="is_active", type="boolean")
      */
     private $isActive;
+
+    /**
+     * @var string le token qui servira lors de l'oubli de mot de passe
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $resetToken;
 
     public function __construct() {
         $this->isActive = true;
@@ -200,29 +207,21 @@ class User implements UserInterface
     }
 
     /**
-     * String representation of object
-     * @link https://php.net/manual/en/serializable.serialize.php
-     * @return string the string representation of the object or null
-     * @since 5.1.0
+     * @return string
      */
-    public function serialize()
+    public function getResetToken(): string
     {
-        // TODO: Implement serialize() method.
+        return $this->resetToken;
     }
 
     /**
-     * Constructs the object
-     * @link https://php.net/manual/en/serializable.unserialize.php
-     * @param string $serialized <p>
-     * The string representation of the object.
-     * </p>
-     * @return void
-     * @since 5.1.0
+     * @param string $resetToken
      */
-    public function unserialize($serialized)
+    public function setResetToken(?string $resetToken): void
     {
-        // TODO: Implement unserialize() method.
+        $this->resetToken = $resetToken;
     }
+
     public function eraseCredentials() {
 
     }
@@ -230,5 +229,29 @@ class User implements UserInterface
         // you *may* need a real salt depending on your encoder
         // see section on salt below
         return null;
+    }
+
+    /** @see \Serializable::serialize() */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->email,
+            $this->password,
+            // see section on salt below
+            // $this->salt,
+        ));
+    }
+
+    /** @see \Serializable::unserialize() */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->email,
+            $this->password,
+            // see section on salt below
+            // $this->salt
+            ) = unserialize($serialized);
     }
 }

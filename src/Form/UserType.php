@@ -5,9 +5,13 @@ namespace App\Form;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Email;
 
 class UserType extends AbstractType
 {
@@ -16,11 +20,11 @@ class UserType extends AbstractType
         $builder
             ->add('nom')
             ->add('prenom')
-            ->add('tel1')
-            ->add('tel2')
-            ->add('pays')
+            ->add('tel1',IntegerType::class, ['required' => true])
+            ->add('tel2',IntegerType::class,['required'   => false])
+            ->add('pays',TextType::class,['required'   => false])
             ->add('password',PasswordType::class)
-            ->add('email')
+            ->add('email',EmailType::class,['required'   => true])
             ->add('roles', ChoiceType::class, [
                 'choices' => [
                     'Téléopérateur' => 'ROLE_TELEOPERATOR',

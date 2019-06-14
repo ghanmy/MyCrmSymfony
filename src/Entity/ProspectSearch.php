@@ -1,6 +1,6 @@
 <?php
 namespace App\Entity;
-class UserSearch {
+class ProspectSearch {
 
     /**
      * @var null|string
@@ -13,7 +13,7 @@ class UserSearch {
     /**
      * @var null|string
      */
-    private $prenom;
+    private $type;
 
     /**
      * @param string|null $email
@@ -32,11 +32,11 @@ class UserSearch {
     }
 
     /**
-     * @param string|null $prenom
+     * @param string|null $type
      */
-    public function setPrenom(?string $prenom): void
+    public function setType(?string $type): void
     {
-        $this->prenom = $prenom;
+        $this->type = $type;
     }
 
     /**
@@ -58,8 +58,8 @@ class UserSearch {
     /**
      * @return string|null
      */
-    public function getPrenom(): ?string
+    public function getType(): ?string
     {
-        return $this->prenom;
+        return $this->type;
     }
 }
