@@ -1,0 +1,8 @@
+dt:
+  columns:
+    callid: Id
+    prname: Prospect
+    contact: Contact
+    date: Date
+    nexCallDate: Prochain appel
+
