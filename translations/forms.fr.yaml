@@ -8,8 +8,4 @@ Name: Raison sciale
 Address: Adresse
 Firstname: Nom
 Lastname: Prénom
-dt:
-  columns:
-    firstName: Nom
-    lastName: Prénom
 
