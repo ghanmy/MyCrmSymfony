@@ -1,0 +1,15 @@
+Roles: Rôle
+Is active: Activer
+ROLE_ADMIN: Admin
+ROLE_COMMERCIAL: Commerciale
+ROLE_TELEOPERATOR: Téléopérateur
+Tvacode: Code TVA
+Name: Raison sciale
+Address: Adresse
+Firstname: Nom
+Lastname: Prénom
+dt:
+  columns:
+    firstName: Nom
+    lastName: Prénom
+
