@@ -1,0 +1,4 @@
+
+<a href="{{ row.id }}"><span class="fa fa-eye"></span></a>
+<a href="{{ path( 'calls_edit',{id:row.id}) }}"><span class="fa fa-edit"></span></a>
+<a href="{{ path( 'calls_delete', {'id': row.id}) }}" data-method="DELETE" title="Supprimer" onclick="return confirm('Vous voulez supprimer cet enregistrement?');"><span class="fa fa-trash"></span></a>
