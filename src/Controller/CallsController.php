@@ -10,6 +10,8 @@ use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\ORM\QueryBuilder;
 use http\Client\Curl\User;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
+use Omines\DataTablesBundle\Column\DateTimeColumn;
+use Omines\DataTablesBundle\Column\TwigColumn;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,7 +44,6 @@ class CallsController extends Controller
     public function new(Request $request, Security $security, CallsRepository $callsRepository): Response
     {
         $idProspect = $request->query->get("id_prospect");
-
         $call = new Calls();
         if (!empty($idProspect)) {
             $prospectObject = $this->getDoctrine()->getManager()->getRepository(Prospect::class)->find($idProspect);
@@ -56,16 +57,41 @@ class CallsController extends Controller
             $call->setUser($security->getUser());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($call);
+            $this->addFlash('success','Appel ajouté avec succès');
             $entityManager->flush();
 
             return $this->redirectToRoute('calls_index');
         }
-        $calls = $callsRepository->findByUser($security->getUser());
-        return $this->render('calls/new.html.twig', [
-            'call' => $call,
-            'calls' => $calls,
-            'form' => $form->createView(),
-        ]);
+        $table = $this->createDataTable()
+            ->add('callid', NumberColumn::class, ['field' => 'e.id', 'searchable' => true])
+            ->add('date', DateTimeColumn::class, ['format' => 'd-m-Y', 'searchable' => true])
+            ->add('nextCallDate', DateTimeColumn::class, ['format' => 'd-m-Y', 'searchable' => false])
+            ->add('prname', TextColumn::class, ['field' => 'p.name', 'searchable' => true])
+            ->add('contact', TextColumn::class, ['field' => 'c.firstname', 'searchable' => true])
+            ->createAdapter(ORMAdapter::class, [
+                'entity' => Calls::class,
+                'query' => function (QueryBuilder $builder) use ($security) {
+                    $builder
+                        ->select('e')
+                        ->from(Calls::class, 'e')
+                        ->where('e.user = :val')
+                        ->setParameter('val', $security->getUser())
+                        ->leftJoin('e.prospect', 'p')
+                        ->leftJoin('e.contact', 'c');
+                },
+
+            ])
+            ->add('actions', TwigColumn::class, [
+                'className' => 'buttons',
+                'template' => 'calls/buttonbar.html.twig',
+            ])
+            ->handleRequest($request);
+
+        if ($table->isCallback()) {
+            return $table->getResponse();
+        }
+
+        return $this->render('calls/new.html.twig', ['form' => $form->createView(), 'datatable' => $table]);
     }
 
     /**
@@ -81,33 +107,37 @@ class CallsController extends Controller
     /**
      * @Route("/{id}/edit", name="calls_edit", methods={"GET","POST"})
      */
-   /* public function edit(Request $request, Calls $call, CallsRepository $callsRepository, Security $security): Response
-    {
-        $form = $this->createForm(CallsType::class, $call);
-        $form->handleRequest($request);
+    /* public function edit(Request $request, Calls $call, CallsRepository $callsRepository, Security $security): Response
+     {
+         $form = $this->createForm(CallsType::class, $call);
+         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+         if ($form->isSubmitted() && $form->isValid()) {
+             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('calls_index', [
-                // 'id' => $call->getId(),
-            ]);
-        }
+             return $this->redirectToRoute('calls_index', [
+                 // 'id' => $call->getId(),
+             ]);
+         }
 
-        return $this->render('calls/edit.html.twig', [
-            'call' => $call,
-            'calls' => $callsRepository->findByUser($security->getUser()),
-            'form' => $form->createView(),
-        ]);
-    }*/
+         return $this->render('calls/edit.html.twig', [
+             'call' => $call,
+             'calls' => $callsRepository->findByUser($security->getUser()),
+             'form' => $form->createView(),
+         ]);
+     }*/
     use DataTablesTrait;
 
-    public function edit(Request $request, Calls $call, CallsRepository $callsRepository, Security $security): Response
+    public function edit(Request $request, Calls $call, Security $security): Response
     {
+        $callid= $call->getId();
+        //dd($request->attributes->get('id'));
         $table = $this->createDataTable()
-            ->add('id', NumberColumn::class)
-            ->add('p', TextColumn::class, ['field' => 'p.name'])
-            ->add('comments', TextColumn::class)
+            ->add('callid', NumberColumn::class, ['field' => 'e.id', 'searchable' => true])
+            ->add('date', DateTimeColumn::class, ['format' => 'd-m-Y', 'searchable' => true])
+            ->add('nextCallDate', DateTimeColumn::class, ['format' => 'd-m-Y', 'searchable' => false])
+            ->add('prname', TextColumn::class, ['field' => 'p.name', 'searchable' => true])
+            ->add('contact', TextColumn::class, ['field' => 'c.firstname', 'searchable' => true])
             ->createAdapter(ORMAdapter::class, [
                 'entity' => Calls::class,
                 'query' => function (QueryBuilder $builder) use ($security) {
@@ -116,20 +146,30 @@ class CallsController extends Controller
                         ->from(Calls::class, 'e')
                         ->where('e.user = :val')
                         ->setParameter('val', $security->getUser())
-                        ->leftJoin('e.prospect', 'c')
-                    ;
+                        ->leftJoin('e.prospect', 'p')
+                        ->leftJoin('e.contact', 'c');
                 },
 
             ])
+            ->add('actions', TwigColumn::class, [
+                'className' => 'buttons',
+                'template' => 'calls/buttonbar.html.twig',
+            ])
             ->handleRequest($request);
-        $form = $this->createForm(CallsType::class, $call);
-        $form->handleRequest($request);
+
         if ($table->isCallback()) {
             return $table->getResponse();
         }
 
-        return $this->render('calls/edit.html.twig',['form'=>$form->createView(),'datatable' => $table]);
+        $form = $this->createForm(CallsType::class, $call);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('success','Appel modifié avec succès');
+        }
+        return $this->render('calls/edit.html.twig', ['callid' => $callid,'form' => $form->createView(), 'datatable' => $table]);
     }
+
     /**
      * @Route("/{id}", name="calls_delete", methods={"DELETE"})
      */

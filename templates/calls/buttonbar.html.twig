@@ -1,4 +1,83 @@
 
-<a href="{{ row.id }}"><span class="fa fa-eye"></span></a>
-<a href="{{ path( 'calls_edit',{id:row.id}) }}"><span class="fa fa-edit"></span></a>
-<a href="{{ path( 'calls_delete', {'id': row.id}) }}" data-method="DELETE" title="Supprimer" onclick="return confirm('Vous voulez supprimer cet enregistrement?');"><span class="fa fa-trash"></span></a>
+<a class="px-1" onclick="return getRecord({{ row.id  }});" href="#" data-target="#calldetails" data-toggle="modal"><span class="fa fa-eye"></span></a>
+
+<a class="px-1" href="{{ path( 'calls_edit',{id:row.id}) }}"><span class="fa fa-edit"></span></a>
+
+<a class="px-1" href="{{ path( 'calls_delete', {'id': row.id}) }}"
+   class="as-form"
+   id="{{ row.id }}"
+   data-method="DELETE"
+   data-csrf="_token:{{ csrf_token('delete' ~ row.id) }}"
+   onclick="return deleteEnregistrement(this);"
+   title="Supprimer"><span class="fa fa-trash"></span></a>
+
+<div id="calldetails" class="modal fade" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog2 modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Détailles d'appel N° {{ row.id }}</h4>
+                <button type="button" class="close" data-dismiss="modal" autocomplete="off">X</button>
+
+            </div>
+            <div class="modal-body" id="getdetails">
+
+                <div class="modal-body" id="getdetails">
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+    <script>
+
+
+        function getRecord(id) {
+            // alert(id);
+            $.ajax({
+                url: 'http://127.0.0.1:8000/calls/' + id,
+                success: function (result) {
+                    //alert(result);
+                    $('#getdetails').html(result);
+                }
+
+
+            });
+        }
+            function deleteEnregistrement(_this){
+                var test =  confirm('Voulez vous supprimer cet enregistrement?');
+                    if(!test) return false;
+                var $form = $('<form/>').hide();
+
+                //form options
+                $form.attr({
+                    'action' : $(_this).attr('href'),
+                    'method':'post'
+                })
+
+                //adding the _method hidden field
+                $form.append($('<input/>',{
+                    type:'hidden',
+                    name:'_method'
+                }).val($(_this).data('method')));
+
+                //adding a CSRF if needs
+                if ($(_this).data('csrf'))
+                {
+                    var csrf = $(_this).data('csrf').split(':');
+                    $form.append($('<input/>',{
+                        type:'hidden',
+                        name:csrf[0]
+                    }).val(csrf[1]));
+                }
+
+                //add form to parent node
+                $(_this).parent().append($form);
+
+                $form.submit();
+
+                return false;
+            };
+
+</script>
+

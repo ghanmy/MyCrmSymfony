@@ -11,6 +11,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -41,6 +42,7 @@ class CallsType extends AbstractType
                 'widget' => 'single_text',
                 'attr' => ['class' => 'calldate'],
                 'html5' => false,
+                'format'=> 'dd-mm-yyyy',
 
             ])
             ->add('callTime', TimeType::class, [
@@ -49,17 +51,20 @@ class CallsType extends AbstractType
                 'html5' => false,
 
             ])
-            ->add('subject')
+            ->add('subject',TextType::class,['required'=>true])
             ->add('nextCallDate', DateType::class, [
                 'widget' => 'single_text',
                 'attr' => ['class' => 'nextcalldate'],
                 'html5' => false,
+                'required'=>false,
+                'format'=> 'dd-mm-yyyy',
 
             ])
             ->add('nextCallTime', TimeType::class, [
                 'widget' => 'single_text',
                 'attr' => ['class' => 'nextcalltime'],
                 'html5' => false,
+                'required'=>false
 
             ])
             ->add('duration')
@@ -75,7 +80,7 @@ class CallsType extends AbstractType
                  ],
                 'label'=>"Type d'appel"
             ])
-            ->add('comments', TextareaType::class);
+            ->add('comments', TextareaType::class,[  'required'=>false]);
         // 3. Add 2 event listeners for the form
         $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
         $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
@@ -142,6 +147,7 @@ class CallsType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Calls::class,
+            'translation_domain' => 'forms'
         ]);
     }
 

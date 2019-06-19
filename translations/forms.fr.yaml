@@ -8,5 +8,13 @@ Name: Raison sciale
 Address: Adresse
 Firstname: Nom
 Lastname: Prénom
+dt:
+  columns:
+    callid: Id
+    prname: Prospect
+    contact: Contact
+    date: Date
+    nextCallDate: Prochain appel
+    actions: Actions
 
 

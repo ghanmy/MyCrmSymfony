@@ -14250,3 +14250,17 @@ be a descendant of the grid when it is being dragged.
 .user .user-settings label {
   color: #666;
 }
+
+.modal-header {
+  background: linear-gradient(to right,#03709e,#18c3fd 100%);
+  color: #fff;
+  border-top-left-radius: 1px;
+  border-top-right-radius: 1px;
+  padding: 10px 15px;
+}
+.bordergray {
+  border: 1px solid #dee2e6 !important;
+}
+.bordergray th, .bordergray td {
+  border: 0px !important;
+}

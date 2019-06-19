@@ -1,34 +1,48 @@
-{% extends 'base.html.twig' %}
 
-{% block title %}Calls{% endblock %}
-
-{% block body %}
-    <h1>Calls</h1>
-
-    <table class="table">
+    <table class="table table-striped bordergray">
         <tbody>
             <tr>
                 <th>Id</th>
                 <td>{{ call.id }}</td>
             </tr>
             <tr>
-                <th>Date</th>
-                <td>{{ call.date ? call.date|date('Y-m-d H:i:s') : '' }}</td>
+                <th>Date et heure d'appel</th>
+                <td>{{ call.date ? call.date|date('d-m-Y') : '' }} {{ call.callTime ? call.callTime|date('H:i') : '' }}</td>
             </tr>
             <tr>
-                <th>Comments</th>
-                <td>{{ call.comments }}</td>
+                <th>Date et heure du prochain appel</th>
+                <td>{{  call.nextCallDate ? call.nextCallDate|date('d-m-Y') : '' }} {{call.nextCallTime ? call.nextCallTime|date('H:i') : '' }}</td>
             </tr>
             <tr>
-                <th>Subject</th>
+                <th>Prospect</th>
+                <td>{{ call.prospect.name }}</td>
+            </tr>
+            <tr>
+                <th>Contact Prospect</th>
+                <td>{{ call.contact.firstname }}</td>
+            </tr>
+            <tr>
+                <th>Durée d'appel</th>
+                <td>{{ call.duration }}
+            </tr>
+            <tr>
+                <th>Type d'appel</th>
+                <td>{% if call.callType == 1 %}
+                        Entrant
+                    {% else %}
+                        Sortant
+                    {% endif %}</td>
+            </tr>
+            <tr>
+                <th>Sujet</th>
                 <td>{{ call.subject }}</td>
             </tr>
+            <tr>
+                <th>Commentaires</th>
+                <td>{{ call.comments }}</td>
+            </tr>
+
         </tbody>
+
     </table>
 
-    <a href="{{ path('calls_index') }}">back to list</a>
-
-    <a href="{{ path('calls_edit', {'id': call.id}) }}">edit</a>
-
-    {{ include('calls/_delete_form.html.twig') }}
-{% endblock %}

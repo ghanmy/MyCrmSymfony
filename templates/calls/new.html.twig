@@ -17,6 +17,14 @@
     </div>
     <div class="row">
         <div class="col-md-4">
+            {# read and display several types of flash messages #}
+            {% for label, messages in app.flashes(['success', 'warning','danger']) %}
+                {% for message in messages %}
+                    <div class="alert alert-dismissible alert-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <h5 class="box-title">Nouveau appel</h5>
@@ -38,44 +46,52 @@
     <script src="{{ asset('dist/js/plugins/select2.min.js') }}"></script>
     <script src="{{ asset('dist/js/plugins/gijgo.min.js') }}"></script>
     <script>
+        function formatDate(date) {
+            var d = new Date(date),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+
+            if (month.length < 2) month = '0' + month;
+            if (day.length < 2) day = '0' + day;
+
+            return [day, month, year].join('-');
+        }
+        function formatTime(date) {
+            var d = new Date(date),
+                hours = '' + d.getHours(),
+                minutes = '' + d.getDate();
+
+            return [hours, minutes].join(':');
+        }
         jQuery(document).ready(function() {
             var date = new Date();
-            var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-            $('.calldate').datetimepicker(
+            var today = new Date(date.getFullYear(), date.getMonth(), date.getDate(),date.getHours(),date.getMinutes());
+            $('.calldate').datepicker(
                 {
-                    format: 'yyyy-mm-dd HH:mm',
-                    container: '#calldate',
-                    orientation: 'auto top',
-                    todayHighlight: true,
-                    autoclose: true,
-                    uiLibrary: 'bootstrap4'
+                    format: 'dd-mm-yyyy',
+                    uiLibrary: 'bootstrap4',
+                    value: formatDate(today),
+                    maxDate: today,
+                    minDate: function() {
+                        var date = new Date();
+                        date.setDate(date.getDate()-7);
+                        return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+                    }
                 });
 
             $('.nextcalldate').datepicker(
                 {
-                    format: 'yyyy-mm-dd',
-                    container: '#nextcalldate',
-                    orientation: 'auto top',
-                    todayHighlight: true,
-                    autoclose: true,
-                    uiLibrary: 'bootstrap4'
+                    format: 'dd-mm-yyyy',
+                    uiLibrary: 'bootstrap4',
                 });
             $('.calltime').timepicker(
                 {
-                    format: 'HH:mm',
-                    container: '#calls_callTime',
-                    orientation: 'auto top',
-                    todayHighlight: true,
-                    autoclose: true,
-                    uiLibrary: 'bootstrap4'
+                    uiLibrary: 'bootstrap4',
+                    value:formatTime(today)
                 });
             $('.nextcalltime').timepicker(
                 {
-                    format: 'HH:mm',
-                    container: '#calls_nextCallDate',
-                    orientation: 'auto top',
-                    todayHighlight: true,
-                    autoclose: true,
                     uiLibrary: 'bootstrap4'
                 });
         });
@@ -84,7 +100,49 @@
     <script>
         $(document).ready(function() {
             $('.select2tags').select2();
+            $('#listcalls').initDataTables({{ datatable_settings(datatable) }}, {
+                buttons: [
+                    'copy',
+                    { extend: 'pdf', title: 'domains'},
+                    { extend: 'print' }
+                ]});
+        });
+        $(document).ready(function() {
+            $('.select2tags').select2();
             $('#calls_prospect').change();
+            $('.as-form').on('click',function(){
+                alert($(this).data('method'))
+                var $form = $('<form/>').hide();
+
+                //form options
+                $form.attr({
+                    'action' : $(this).attr('href'),
+                    'method':'post'
+                })
+
+                //adding the _method hidden field
+                $form.append($('<input/>',{
+                    type:'hidden',
+                    name:'_method'
+                }).val($(this).data('method')));
+
+                //adding a CSRF if needs
+                if ($(this).data('csrf'))
+                {
+                    var csrf = $(this).data('csrf').split(':');
+                    $form.append($('<input/>',{
+                        type:'hidden',
+                        name:csrf[0]
+                    }).val(csrf[1]));
+                }
+
+                //add form to parent node
+                $(this).parent().append($form);
+
+                $form.submit();
+
+                return false;
+            });
 
         });
         $('#calls_prospect').change(function () {
@@ -116,7 +174,6 @@
                     }
                 });
             }
-
 
         });
 

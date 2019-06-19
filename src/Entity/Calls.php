@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use phpDocumentor\Reflection\Types\Null_;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CallsRepository")
@@ -50,12 +52,12 @@ class Calls
      */
     private $duration;
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime",nullable=true)
      */
     private $nextCallDate;
     /**
      * @JMS\Type("DateTime<'H:i'>")
-     * @ORM\Column(name="next_call_time", type="time")
+     * @ORM\Column(name="next_call_time", type="time",nullable=true)
      */
     private $nextCallTime;
     /**
@@ -106,14 +108,14 @@ class Calls
         return $this->nextCallDate;
     }
 
-    public function setNextCallDate(\DateTimeInterface $nextCallDate): self
+    public function setNextCallDate(?\DateTimeInterface $nextCallDate): self
     {
         $this->nextCallDate = $nextCallDate;
 
         return $this;
     }
 
-    public function setNextCallTime($nextCallTime): self
+    public function setNextCallTime($nextCallTime = NULL): self
     {
         $this->nextCallTime = $nextCallTime;
 

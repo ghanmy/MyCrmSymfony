@@ -8,7 +8,11 @@ datatables:
 
   # Default options to load into DataTables
   options:
-    pageLength:           10
+    searching: true
+    lengthMenu : [5, 10, 25, 50, 100]
+    pageLength:           5
+    dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>"
+
 
   # Where to persist the current table state automatically
   persist_state:        fragment # One of "none"; "query"; "fragment"; "local"; "session"
@@ -23,10 +27,10 @@ datatables:
   template_parameters:
 
     # Default class attribute to apply to the root table element
-    className:        'table table-hover table-striped  dataTable'
+    className:        'table table-striped table-bordered table-hover data-table'
 
     # If and where to enable the DataTables Filter module
-    columnFilter:     null # One of "thead"; "tfoot"; "both"; null
+    columnFilter:     thead # One of "thead"; "tfoot"; "both"; null
 
   # Default translation domain to be used
   translation_domain:   forms
