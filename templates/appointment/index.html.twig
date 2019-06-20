@@ -9,9 +9,11 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Date</th>
+                <th>MeetingDate</th>
                 <th>MeetingTime</th>
                 <th>MeetingPlace</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -19,9 +21,11 @@
         {% for appointment in appointments %}
             <tr>
                 <td>{{ appointment.id }}</td>
-                <td>{{ appointment.date ? appointment.date|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ appointment.meetingDate ? appointment.meetingDate|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ appointment.meetingTime ? appointment.meetingTime|date('H:i:s') : '' }}</td>
                 <td>{{ appointment.meetingPlace }}</td>
+                <td>{{ appointment.createdAt ? appointment.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ appointment.updatedAt ? appointment.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
                     <a href="{{ path('appointment_show', {'id': appointment.id}) }}">show</a>
                     <a href="{{ path('appointment_edit', {'id': appointment.id}) }}">edit</a>
@@ -29,7 +33,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td colspan="7">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

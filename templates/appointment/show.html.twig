@@ -12,8 +12,8 @@
                 <td>{{ appointment.id }}</td>
             </tr>
             <tr>
-                <th>Date</th>
-                <td>{{ appointment.date ? appointment.date|date('Y-m-d H:i:s') : '' }}</td>
+                <th>MeetingDate</th>
+                <td>{{ appointment.meetingDate ? appointment.meetingDate|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
                 <th>MeetingTime</th>
@@ -22,6 +22,14 @@
             <tr>
                 <th>MeetingPlace</th>
                 <td>{{ appointment.meetingPlace }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ appointment.createdAt ? appointment.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ appointment.updatedAt ? appointment.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
         </tbody>
     </table>
