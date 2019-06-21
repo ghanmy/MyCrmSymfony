@@ -1,11 +1,96 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Appointment{% endblock %}
-
-{% block body %}
-    <h1>Create new Appointment</h1>
-
-    {{ include('appointment/_form.html.twig') }}
-
-    <a href="{{ path('appointment_index') }}">back to list</a>
+{% block title %}Nouveau rendez vous{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
 {% endblock %}
+{% block body %}
+    <div class="app-title">
+        <div>
+            <h1><i class="fa fa-calendar"></i> Appointment</h1>
+        </div>
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path("home") }}"><i class="fa fa-home fa-lg"></i></a></li>
+            <li class="breadcrumb-item"><a href="{{ path("appointment_index") }}">Appointment</a></li>
+
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            {# read and display several types of flash messages #}
+            {% for label, messages in app.flashes(['success', 'warning','danger']) %}
+                {% for message in messages %}
+                    <div class="alert alert-dismissible alert-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h5 class="box-title">Nouveau rendez vous</h5>
+                </div><!-- /.box-header -->
+
+                <div class="box-body">
+                    {{ include('appointment/_form.html.twig', {'button_label': 'Enregistrer'}) }}
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            {{ include('appointment/index.html.twig') }}
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('dist/js/plugins/select2.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+    <script>
+
+        $(document).ready(function() {
+            $('#listapponitments').initDataTables({{ datatable_settings(datatable) }}, {
+                buttons: [
+                    'copy',
+                    { extend: 'pdf', title: 'domains'},
+                    { extend: 'print' }
+                ]});
+            $('.select2tags').select2();
+            $('#appointment_prospect').change();
+            $('#appointment_prospect').change(function () {
+                var prospectSelector = $(this);
+                if(prospectSelector!="" && prospectSelector!= null && typeof prospectSelector!= "undefined"){
+                    // Request the contacts of the selected prospect.
+                    $.ajax({
+                        url: "{{ path('prospect_list_calls') }}",
+                        type: "GET",
+                        dataType: "JSON",
+                        data: {
+                            prospectid: prospectSelector.val()
+                        },
+                        success: function (calls) {
+                            var contactSelect = $("#appointment_call");
+                            // Remove current options
+                            contactSelect.html('');
+
+                            // Empty value ...
+                            contactSelect.append('<option value> Choisir un appel de ' + prospectSelector.find("option:selected").text() + ' ...</option>');
+
+
+                            $.each(calls, function (key, call) {
+                                contactSelect.append('<option value="' + call.id + '">' + call.id + '</option>');
+                            });
+                        },
+                        error: function (err) {
+                            alert("An error ocurred while loading data ...");
+                        }
+                    });
+                }
+
+            });
+        });
+    </script>
+{% endblock %}
+
+
+
+

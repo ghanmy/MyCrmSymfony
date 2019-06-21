@@ -1,43 +1,10 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Appointment index{% endblock %}
-
-{% block body %}
-    <h1>Appointment index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>MeetingDate</th>
-                <th>MeetingTime</th>
-                <th>MeetingPlace</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for appointment in appointments %}
-            <tr>
-                <td>{{ appointment.id }}</td>
-                <td>{{ appointment.meetingDate ? appointment.meetingDate|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ appointment.meetingTime ? appointment.meetingTime|date('H:i:s') : '' }}</td>
-                <td>{{ appointment.meetingPlace }}</td>
-                <td>{{ appointment.createdAt ? appointment.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ appointment.updatedAt ? appointment.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('appointment_show', {'id': appointment.id}) }}">show</a>
-                    <a href="{{ path('appointment_edit', {'id': appointment.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('appointment_new') }}">Create new</a>
-{% endblock %}
+<div class="box box-primary">
+    <div class="box-header ptbnull">
+        <h4 class="box-title titlefix">Liste des rendez vous</h4>
+        <div class="box-tools pull-right">
+        </div><!-- /.box-tools -->
+    </div><!-- /.box-header -->
+    <div class="box-body">
+        <div class="table-responsive mailbox-messages" id="listappointment">Chargement...</div>
+    </div>
+</div>
