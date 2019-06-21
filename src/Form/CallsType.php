@@ -81,14 +81,14 @@ class CallsType extends AbstractType
                 'label'=>"Type d'appel"
             ])
             ->add('comments', TextareaType::class,[  'required'=>false]);
-        // 3. Add 2 event listeners for the form
+        // Add 2 event listeners for the form
         $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
         $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
 
     }
 
     protected function addElements(FormInterface $form, Prospect $prospect = null) {
-        // 4. Add the province element
+
         $form->add('prospect', EntityType::class, [
             'data' =>$prospect,
             'class' => Prospect::class,
@@ -98,12 +98,12 @@ class CallsType extends AbstractType
             'attr'=>array('class'=>'select2tags'),
         ]);
 
-        // Neighborhoods empty, unless there is a selected City (Edit View)
+
         $contacts = array();
 
-        // If there is a city stored in the Person entity, load the neighborhoods of it
+
         if ($prospect) {
-            // Fetch Neighborhoods of the City if there's a selected city
+
             $contactRepository = $this->em->getRepository(Contact::class);
 
             $contacts = $contactRepository->createQueryBuilder("q")
@@ -113,7 +113,6 @@ class CallsType extends AbstractType
                 ->getResult();
         }
 
-        // Add the Neighborhoods field with the properly data
         $form->add('contact', EntityType::class, array(
             'required' => true,
             'placeholder' => "D'abord choisir un prospect ...",
@@ -127,7 +126,6 @@ class CallsType extends AbstractType
         $form = $event->getForm();
         $data = $event->getData();
 
-        // Search for selected City and convert it into an Entity
         $prospect = $this->em->getRepository(Prospect::class)->find($data['prospect']);
 
         $this->addElements($form, $prospect);
@@ -137,9 +135,7 @@ class CallsType extends AbstractType
         $call = $event->getData();
         $form = $event->getForm();
 
-        // When you create a new person, the City is always empty
         $prospect = $call->getProspect() ? $call->getProspect() : null;
-
         $this->addElements($form, $prospect);
     }
 
