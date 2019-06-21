@@ -120,7 +120,7 @@ class ProspectController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      */
-    public function listContactByProspect(Request $request)
+    public function listContactsByProspect(Request $request)
     {
         // Get Entity manager and repository
         $em = $this->getDoctrine()->getManager();
