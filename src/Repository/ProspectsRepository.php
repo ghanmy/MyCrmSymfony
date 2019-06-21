@@ -49,6 +49,22 @@ class ProspectsRepository extends ServiceEntityRepository
         ;
     }
     */
+    // /**
+    //  * @return Prospect[] Returns an array of Prospects objects
+    //  */
+
+    public function findByUser($value)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.user = :val')
+            ->setParameter('val', $value)
+            ->orderBy('p.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+
     public function findAllQuery(ProspectSearch $search): Query
     {
         $query = $this->createQueryBuilder('u');
@@ -63,6 +79,6 @@ class ProspectsRepository extends ServiceEntityRepository
                 ->setParameter('prospectemail', '%'.$search->getEmail().'%');
 
         return $query->getQuery();
-
     }
+
 }
