@@ -41,9 +41,9 @@ class AppointmentController extends Controller
     }
 
     /**
-     * @Route("/new", name="appointment_new", methods={"GET","POST"})
+     * @Route("/index", name="appointment_index", methods={"GET","POST"})
      */
-    public function new(Request $request, Security $security, CallsRepository $callsRepository): Response
+    public function new(Request $request, Security $security): Response
     {
         $idProspect = $request->query->get("id_prospect");
         $appointment = new Appointment();
@@ -51,6 +51,7 @@ class AppointmentController extends Controller
             $prospectObject = $this->getDoctrine()->getManager()->getRepository(Prospect::class)->find($idProspect);
             $appointment->setProspect($prospectObject);
         }
+
         $form = $this->createForm(AppointmentType::class, $appointment);
         $form->handleRequest($request);
 
@@ -65,25 +66,30 @@ class AppointmentController extends Controller
         }
 
         $table = $this->createDataTable()
-            ->add('id', NumberColumn::class, ['field' => 'appoint.id', 'searchable' => true])
-            ->add('meetingDate', DateTimeColumn::class, ['format' => 'd-m-Y', 'searchable' => true])
-            ->add('prospect', TextColumn::class, ['field' => 'pros.nom', 'searchable' => true])
+            ->add('appointmentid', NumberColumn::class, ['field' => 'appoint.id', 'searchable' => true])
+            ->add('meetingDate', DateTimeColumn::class, ['field' => 'appoint.meetingDate','format' => 'd-m-Y', 'searchable' => true])
+            ->add('meetingTime', DateTimeColumn::class, ['field' => 'appoint.meetingTime','format' => 'H:m', 'searchable' => true])
+            ->add('prospect', TextColumn::class, ['field' => 'pros.name', 'searchable' => true])
+            ->add('commercial', TextColumn::class, ['field' => 'com.nom', 'searchable' => true])
+            ->add('call', TextColumn::class, ['field' => 'call.id', 'searchable' => true])
             ->createAdapter(ORMAdapter::class, [
                 'entity' => Calls::class,
                 'query' => function (QueryBuilder $builder) use ($security) {
                     $builder
                         ->select('appoint')
-                        ->from(Calls::class, 'appoint')
+                        ->from(Appointment::class, 'appoint')
                         ->where('appoint.user = :val')
                         ->setParameter('val', $security->getUser())
                         ->leftJoin('appoint.prospect', 'pros')
-                        ->leftJoin('appoint.calls', 'call');
-                },
+                        ->leftJoin('appoint.call', 'call')
+                        ->leftJoin('appoint.user', 'com')
 
+                    ;
+                },
             ])
             ->add('actions', TwigColumn::class, [
                 'className' => 'buttons',
-                'template' => 'calls/buttonbar.html.twig',
+                'template' => 'appointment/buttonbar.html.twig',
             ])
             ->handleRequest($request);
 
