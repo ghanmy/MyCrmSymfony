@@ -8,13 +8,24 @@ Name: Raison sciale
 Address: Adresse
 Firstname: Nom
 Lastname: Prénom
+
+#translation of dtables columns
 dt:
   columns:
+    #appel and prospect
     callid: Id
     prname: Prospect
     contact: Contact
     date: Date
     nextCallDate: Prochain appel
+    #rendez vous
+    appointmentid: Id
+    meetingDate: Date
+    meetingTime: Temps
+    prospect: Prospect
+    call: Appel
+    commercial: Commercial
+    #in all tables
     actions: Actions
 
 
