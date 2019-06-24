@@ -7,11 +7,11 @@
 {% block body %}
     <div class="app-title">
         <div>
-            <h1><i class="fa fa-calendar"></i> Appointment</h1>
+            <h1><i class="fa fa-calendar"></i> Rendez vous</h1>
         </div>
         <ul class="app-breadcrumb breadcrumb">
             <li class="breadcrumb-item"><a href="{{ path("home") }}"><i class="fa fa-home fa-lg"></i></a></li>
-            <li class="breadcrumb-item"><a href="{{ path("appointment_index") }}">Appointment</a></li>
+            <li class="breadcrumb-item"><a href="{{ path("appointment_index") }}">Rendez vous</a></li>
 
         </ul>
     </div>
@@ -48,7 +48,7 @@
     <script>
 
         $(document).ready(function() {
-            $('#listapponitments').initDataTables({{ datatable_settings(datatable) }}, {
+            $('#listappointment').initDataTables({{ datatable_settings(datatable) }}, {
                 buttons: [
                     'copy',
                     { extend: 'pdf', title: 'domains'},
