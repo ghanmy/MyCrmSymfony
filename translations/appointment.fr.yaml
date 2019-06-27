@@ -1,0 +1,13 @@
+appointment:
+  show:
+    MeetingDate: Date de rendez-vous
+    MeetingTime: Temps du rendez-vous
+    MeetingPlace: Lieu du rendez-vous
+    Call: Appel
+    Commercial: Commrecial
+    Prospect: Prospect
+    CreatedAt: Date de création
+    UpdatedAt: Date du dernier modifation
+    ptel: Tél
+
+

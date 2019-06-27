@@ -52,19 +52,15 @@ class Prospect
     private $address;
 
     /**
+     * @ORM\Column(type="string", length=20)
+     * @Assert\NotBlank()
+     */
+    private $tel;
+
+    /**
      * @ORM\Column(type="string", length=255,nullable=true)
      */
     private $tvacode;
-
-    /**
-     * @ORM\Column(name="createdat", type="datetime")
-     */
-    private $createdat;
-
-    /**
-     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
-     */
-    private $updatedAt;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Contact",mappedBy="prospect",cascade={"persist", "remove"}, orphanRemoval=true)
@@ -72,15 +68,31 @@ class Prospect
     protected $contacts;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Calls", mappedBy="prospect")
+     * @ORM\OneToMany(targetEntity="App\Entity\Calls", mappedBy="prospect",cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $calls;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Appointment", mappedBy="prospect",cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private $appointments;
+
+    /**
+     * @ORM\Column(name="createdat", type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(name="updatetat", type="datetime",nullable=true)
+     */
+    private $updatedAt;
+
     public function __construct()
     {
-        $this->createdat = new Datetime();
+        $this->createdAt = new Datetime();
         $this->contacts = new ArrayCollection();
         $this->calls = new ArrayCollection();
+        $this->appointments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -148,16 +160,28 @@ class Prospect
         return $this;
     }
 
-    public function setCreatedat(Datetime $createdat)
+    public function setTel(?string $tel)
     {
-        $this->createdat = $createdat;
+        $this->tel = $tel;
 
         return $this;
     }
 
-    public function getCreatedat()
+    public function getTel()
     {
-        return $this->createdat;
+        return $this->tel;
+    }
+
+    public function setCreatedAt(Datetime $createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
 
     public function getUpdatedAt()
@@ -165,7 +189,7 @@ class Prospect
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(Datetime $updatedAt)
+    public function setUpdatedAt(?\Datetime $updatedAt)
     {
         $this->updatedAt = $updatedAt;
 
@@ -225,5 +249,21 @@ class Prospect
     public function removeCall(Calls $call)
     {
         $this->calls->removeElement($call);
+    }
+
+    public function getAppointment()
+    {
+        return $this->appointment;
+    }
+
+    public function addAppointment ($appointment)
+    {
+        $this->appointment->add($appointment);
+        $appointment->setProspect($this);
+    }
+
+    public function removeAppointment(Appointment $appointment)
+    {
+        $this->appointment->removeElement($appointment);
     }
 }

@@ -36,13 +36,13 @@ class User implements UserInterface, \Serializable
      */
     private $tel1;
     /**
-     * @ORM\Column(type="string", length=191)
+     * @ORM\Column(type="string", length=191,nullable=true)
      * @Assert\Regex(pattern="/^[0-9]{8}$/", message="Le numéro de téléphone doit contenir 8 chiffres")
      */
     private $tel2;
 
     /**
-     * @ORM\Column(type="string", length=191)
+     * @ORM\Column(type="string", length=191, nullable=true, options={"default" : "Tunisie"})
      */
     private $pays;
 
@@ -139,7 +139,7 @@ class User implements UserInterface, \Serializable
         return $this->pays;
     }
 
-    public function setPays(string $pays): self
+    public function setPays(string $pays ="Tunisie"): self
     {
         $this->pays = $pays;
 
@@ -186,7 +186,6 @@ class User implements UserInterface, \Serializable
         if (empty($this->roles)) {
             return ['ROLE_USER'];
         }
-
         return $this->roles;
     }
 

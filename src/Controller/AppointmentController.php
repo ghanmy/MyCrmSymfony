@@ -47,6 +47,14 @@ class AppointmentController extends Controller
     {
         $idProspect = $request->query->get("id_prospect");
         $appointment = new Appointment();
+        $id_call = $request->get('callid');
+        if(!empty($id_call)){
+            $objectcall = $this->getDoctrine()->getManager()->getRepository(Calls::class)->find($id_call);
+            $objprospect = $objectcall->getProspect();
+            $appointment->setProspect($objprospect);
+            $appointment->setCall($objectcall);
+        }
+
         if (!empty($idProspect)) {
             $prospectObject = $this->getDoctrine()->getManager()->getRepository(Prospect::class)->find($idProspect);
             $appointment->setProspect($prospectObject);
@@ -104,6 +112,7 @@ class AppointmentController extends Controller
      */
     public function show(Appointment $appointment): Response
     {
+        //dd($appointment);
         return $this->render('appointment/show.html.twig', [
             'appointment' => $appointment,
         ]);
@@ -112,23 +121,54 @@ class AppointmentController extends Controller
     /**
      * @Route("/{id}/edit", name="appointment_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Appointment $appointment): Response
+    public function edit(Request $request, Appointment $appointment, Security $security): Response
     {
+        $appointmentid= $appointment->getId();
         $form = $this->createForm(AppointmentType::class, $appointment);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $appointment->setUser($security->getUser());
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($appointment);
+            $this->addFlash('success','Rendez vous modifié avec succès');
+            $entityManager->flush();
 
-            return $this->redirectToRoute('appointment_index', [
-                'id' => $appointment->getId(),
-            ]);
+            return $this->redirectToRoute('appointment_index');
         }
 
-        return $this->render('appointment/edit.html.twig', [
-            'appointment' => $appointment,
-            'form' => $form->createView(),
-        ]);
+        $table = $this->createDataTable()
+            ->add('appointmentid', NumberColumn::class, ['field' => 'appoint.id', 'searchable' => true])
+            ->add('meetingDate', DateTimeColumn::class, ['field' => 'appoint.meetingDate','format' => 'd-m-Y', 'searchable' => true])
+            ->add('meetingTime', DateTimeColumn::class, ['field' => 'appoint.meetingTime','format' => 'H:m', 'searchable' => true])
+            ->add('prospect', TextColumn::class, ['field' => 'pros.name', 'searchable' => true])
+            ->add('commercial', TextColumn::class, ['field' => 'com.nom', 'searchable' => true])
+            ->add('call', TextColumn::class, ['field' => 'call.id', 'searchable' => true])
+            ->createAdapter(ORMAdapter::class, [
+                'entity' => Calls::class,
+                'query' => function (QueryBuilder $builder) use ($security) {
+                    $builder
+                        ->select('appoint')
+                        ->from(Appointment::class, 'appoint')
+                        ->where('appoint.user = :val')
+                        ->setParameter('val', $security->getUser())
+                        ->leftJoin('appoint.prospect', 'pros')
+                        ->leftJoin('appoint.call', 'call')
+                        ->leftJoin('appoint.user', 'com')
+
+                    ;
+                },
+            ])
+            ->add('actions', TwigColumn::class, [
+                'className' => 'buttons',
+                'template' => 'appointment/buttonbar.html.twig',
+            ])
+            ->handleRequest($request);
+
+        if ($table->isCallback()) {
+            return $table->getResponse();
+        }
+        return $this->render('appointment/edit.html.twig',['appointmentid'=>$appointmentid,'form' => $form->createView(), 'datatable' => $table]);
     }
 
     /**
@@ -147,6 +187,7 @@ class AppointmentController extends Controller
 
     public function listCallsByProspect(Request $request)
     {
+        $prospectid = $request->query->get('prospectid');
         // Get Entity manager and repository
         $em = $this->getDoctrine()->getManager();
         $contactRepository = $em->getRepository(Calls::class);
@@ -154,7 +195,7 @@ class AppointmentController extends Controller
         // Search the neighborhoods that belongs to the city with the given id as GET parameter "cityid"
         $calls = $contactRepository->createQueryBuilder("c")
             ->where("c.prospect = :prospectid")
-            ->setParameter("prospectid", 8)
+            ->setParameter("prospectid", $prospectid)
             ->getQuery()
             ->getResult();
 

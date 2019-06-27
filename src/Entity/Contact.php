@@ -202,5 +202,4 @@ class Contact
     {
         return $this->prospect;
     }
-
 }

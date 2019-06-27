@@ -8,6 +8,7 @@ use App\Entity\ProspectSearch;
 use App\Form\ProspectSearchType;
 use App\Form\ProspectType;
 use App\Repository\ProspectsRepository;
+use App\Service\PaginatorStep;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,16 +25,15 @@ class ProspectController extends AbstractController
     /**
      * @Route("/", name="prospect_index", methods={"GET","POST"})
      */
-    public function index(PaginatorInterface $paginator,ProspectsRepository $prospectRepository,Request $request): Response
+    public function index(PaginatorInterface $paginator,ProspectsRepository $prospectRepository,Request $request,PaginatorStep $paginatorstep): Response
     {
-
         $search = new ProspectSearch();
         $form = $this->createForm(ProspectSearchType::class,$search);
         $form->handleRequest($request);
         $pagination = $paginator->paginate(
             $prospectRepository->findAllQuery($search), /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/
-            3 /*limit per page*/
+            $paginatorstep->getStep() /*limit per page*/
         );
         return $this->render('prospect/index.html.twig', [
             'prospects' => $pagination,

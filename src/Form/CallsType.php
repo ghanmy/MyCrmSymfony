@@ -114,11 +114,12 @@ class CallsType extends AbstractType
         }
 
         $form->add('contact', EntityType::class, array(
-            'required' => true,
+            'required' => false,
             'placeholder' => "D'abord choisir un prospect ...",
             'class' => Contact::class,
             'choice_label' => 'firstname',
             'choices' => $contacts,
+
         ));
     }
 

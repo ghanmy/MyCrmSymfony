@@ -67,6 +67,7 @@ class CallsController extends Controller
             ->add('date', DateTimeColumn::class, ['format' => 'd-m-Y', 'searchable' => true])
             ->add('nextCallDate', DateTimeColumn::class, ['format' => 'd-m-Y', 'searchable' => false])
             ->add('prname', TextColumn::class, ['field' => 'p.name', 'searchable' => true])
+            ->add('ptel', TextColumn::class, ['field' => 'p.tel', 'searchable' => true])
             ->add('contact', TextColumn::class, ['field' => 'c.firstname', 'searchable' => true])
             ->createAdapter(ORMAdapter::class, [
                 'entity' => Calls::class,
@@ -104,30 +105,12 @@ class CallsController extends Controller
         ]);
     }
 
+
+    use DataTablesTrait;
+
     /**
      * @Route("/{id}/edit", name="calls_edit", methods={"GET","POST"})
      */
-    /* public function edit(Request $request, Calls $call, CallsRepository $callsRepository, Security $security): Response
-     {
-         $form = $this->createForm(CallsType::class, $call);
-         $form->handleRequest($request);
-
-         if ($form->isSubmitted() && $form->isValid()) {
-             $this->getDoctrine()->getManager()->flush();
-
-             return $this->redirectToRoute('calls_index', [
-                 // 'id' => $call->getId(),
-             ]);
-         }
-
-         return $this->render('calls/edit.html.twig', [
-             'call' => $call,
-             'calls' => $callsRepository->findByUser($security->getUser()),
-             'form' => $form->createView(),
-         ]);
-     }*/
-    use DataTablesTrait;
-
     public function edit(Request $request, Calls $call, Security $security): Response
     {
         $callid= $call->getId();

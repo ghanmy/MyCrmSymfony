@@ -10,7 +10,16 @@ logout:
 #    path: /
 #    controller: App\Controller\DefaultController::index
 # AppBundle/Resources/config/routing/person.yml
+
+#appel ajax de la liste des contact par prospect
 prospect_list_contacts:
     path: /get-contact-from-prospect
-    controller: App\Controller\ProspectController::listContactByProspect
+    controller: App\Controller\AppointmentController::listCallsByProspect
     methods:  GET
+#appel ajax de la liste des appels par prospect
+prospect_list_calls:
+  path: /get-calls-form-prospect
+  controller: App\Controller\AppointmentController::listCallsByProspect
+  methods:  GET
+
+

@@ -103,11 +103,12 @@ class AppointmentType extends AbstractType
 
         $form->add('call', EntityType::class, array(
             'choices' => $calls,
-            'required' => true,
+            'required' => false,
             'placeholder' => "D'abord choisir un appel ...",
             'class' => Calls::class,
             'choice_label' => 'id',
-            'required'=>false
+            'required'=>false,
+            'empty_data' => NULL,
         ));
     }
 
@@ -120,11 +121,12 @@ class AppointmentType extends AbstractType
         $calls=$this->em->getRepository(Prospect::class)->find($rdv['prospect']);
         $form->add('call', EntityType::class, array(
             'data' =>$calls,
-            'required' => true,
+            'required' => false,
             'placeholder' => "D'abord choisir un appel ...",
             'class' => Calls::class,
             'choice_label' => 'id',
-            'required'=>false
+            'required'=>false,
+            'empty_data' => NULL,
         ));
     }
 
@@ -133,6 +135,7 @@ class AppointmentType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Appointment::class,
+            'translation_domain' => 'forms'
         ]);
     }
 }

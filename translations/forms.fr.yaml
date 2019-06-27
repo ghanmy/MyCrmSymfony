@@ -8,6 +8,11 @@ Name: Raison sciale
 Address: Adresse
 Firstname: Nom
 Lastname: Prénom
+MeetingDate: Date
+MeetingTime: Temps
+MeetingPlace: Lieu
+CreatedAt: Date de création
+UpdatedAt: Dernière modification
 
 #translation of dtables columns
 dt:
@@ -25,7 +30,10 @@ dt:
     prospect: Prospect
     call: Appel
     commercial: Commercial
+    ptel: Tél
     #in all tables
     actions: Actions
+
+
 
 

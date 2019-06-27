@@ -30,7 +30,7 @@ class UserController extends AbstractController
         $pagination = $paginator->paginate(
             $userRepository->findAllQuery($search), /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/
-            3 /*limit per page*/
+            5 /*limit per page*/
         );
         return $this->render('user/index.html.twig', [
             'users' => $pagination,

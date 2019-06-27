@@ -20,6 +20,7 @@ class ProspectType extends AbstractType
             ->add('type')
             ->add('address')
             ->add('tvacode')
+            ->add('tel')
             ->add('createdat')
             ->add('contacts', CollectionType::class, [
                 'mapped' => true,

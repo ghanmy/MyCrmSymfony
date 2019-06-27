@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use phpDocumentor\Reflection\Types\Null_;
@@ -20,14 +22,14 @@ class Calls
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Prospect")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Prospect",inversedBy="calls")
      * @ORM\JoinColumn(nullable=false)
      */
     private $prospect;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Contact")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $contact;
 
@@ -36,6 +38,12 @@ class Calls
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
+
+    /**
+     * One Call has One Appointment.
+     * @ORM\OneToOne(targetEntity="App\Entity\Appointment", mappedBy="call", cascade={"persist", "remove"})
+     */
+    private $appointment;
 
     /**
      * @ORM\Column(type="datetime")
@@ -60,6 +68,7 @@ class Calls
      * @ORM\Column(name="next_call_time", type="time",nullable=true)
      */
     private $nextCallTime;
+
     /**
      * @ORM\Column(type="string", length=500, nullable=true)
      */
@@ -69,10 +78,26 @@ class Calls
      * @ORM\Column(type="string", length=500, nullable=true)
      */
     private $subject;
+
     /**
      * @ORM\Column(name="calltype", type="boolean")//true sortie - false:sortie
      */
     private $calltype;
+
+    /**
+     * @ORM\Column(name="createdat", type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(name="updatedat", type="datetime",nullable=true)
+     */
+    private $updatedAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new Datetime();
+    }
 
     public function getId(): ?int
     {
@@ -183,6 +208,18 @@ class Calls
         return $this->user;
     }
 
+    public function getAppointment()
+    {
+        return $this->appointment;
+    }
+
+    public function setAppointment (Appointment $appointment)
+    {
+        $this->appointment->$appointment;
+        return $appointment;
+
+    }
+
     public function setSubject($subject)
     {
         $this->subject = $subject;
@@ -202,6 +239,37 @@ class Calls
     public function setCallType($calltype){
         $this->calltype = $calltype;
         return $this;
+    }
+
+    public function setCreatedAt(Datetime $createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(Datetime $updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+    /**
+     * @ORM\PreUpdate
+     */
+    public function updateDate()
+    {
+        $this->setUpdatedAt(new \Datetime());
     }
 
 

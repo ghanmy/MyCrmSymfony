@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use phpDocumentor\Reflection\Types\Null_;
@@ -9,6 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AppointmentRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Appointment
 {
@@ -20,9 +23,9 @@ class Appointment
     private $id;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(name="meeting_date",type="datetime")
      */
-    private $date;
+    private $meetingDate;
 
     /**
      * @JMS\Type("DateTime<'H:i'>")
@@ -30,23 +33,28 @@ class Appointment
      */
     private $meetingTime;
 
-
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $meetingPlace;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Prospect")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Prospect", inversedBy="appointments")
+     * @ORM\JoinColumn(referencedColumnName="id",nullable=false,onDelete="CASCADE")
      */
     private $prospect;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Contact")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(name="calls_id", nullable=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\Calls", inversedBy="appointment")
      */
-    private $contact;
+    private $call;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(name="commercial_id", referencedColumnName="id")
+     */
+    private $commercial;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
@@ -54,20 +62,34 @@ class Appointment
      */
     private $user;
 
+    /**
+     * @ORM\Column(name="createdat", type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(name="updatedat", type="datetime", nullable=true)
+     */
+    private $updatedAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new Datetime();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getMeetingDate(): ?\DateTimeInterface
     {
-        return $this->date;
+        return $this->meetingDate;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setMeetingDate(\DateTimeInterface $meetingDate): self
     {
-        $this->date = $date;
+        $this->meetingDate = $meetingDate;
 
         return $this;
     }
@@ -102,18 +124,31 @@ class Appointment
 
         return $this;
     }
+
     public function getProspect()
     {
         return $this->prospect;
     }
 
-    public function getContact()
+    public function getCall()
     {
-        return $this->contact;
+        return $this->call;
     }
-    public function setContact(Contact $contact)
+
+    public function setCall(Calls $call=NULL)
     {
-        $this->contact = $contact;
+        $this->call = $call;
+        return $this;
+    }
+
+    public function getCommercial()
+    {
+        return $this->commercial;
+    }
+
+    public function setCommercial(User $commercial)
+    {
+        $this->commercial = $commercial;
         return $this;
     }
 
@@ -127,5 +162,36 @@ class Appointment
     public function getUser()
     {
         return $this->user;
+    }
+
+    public function setCreatedAt(Datetime $createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(Datetime $updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+    /**
+     * @ORM\PreUpdate
+     */
+    public function updateDate()
+    {
+        $this->setUpdatedAt(new \Datetime());
     }
 }
