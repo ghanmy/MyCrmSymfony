@@ -5,23 +5,37 @@
                 <td>{{ appointment.id }}</td>
             </tr>
             <tr>
-                <th>MeetingDate</th>
-                <td>{{ appointment.meetingDate ? appointment.meetingDate|date('Y-m-d H:i:s') : '' }}</td>
+                <th>{{ "appointment.show.MeetingDate" | trans([],'appointment') }}</th>
+                <td>{{ appointment.meetingDate ? appointment.meetingDate|date('Y-m-d') : '' }}</td>
             </tr>
             <tr>
-                <th>MeetingTime</th>
-                <td>{{ appointment.meetingTime ? appointment.meetingTime|date('H:i:s') : '' }}</td>
+                <th>{{ "appointment.show.MeetingTime" | trans([],'appointment') }}</th>
+                <td>{{ appointment.meetingTime ? appointment.meetingTime|date('H:i') : '' }}</td>
             </tr>
             <tr>
-                <th>MeetingPlace</th>
+                <th>{{ "appointment.show.MeetingPlace" | trans([],'appointment') }}</th>
                 <td>{{ appointment.meetingPlace }}</td>
             </tr>
+            {% if appointment.call.id is defined %}
             <tr>
-                <th>CreatedAt</th>
+                <th>Id {{ "appointment.show.Call" | trans([],'appointment') }}</th>
+                <td>{{ appointment.call.id }}</td>
+            </tr>
+            {% endif %}
+            <tr>
+                <th>{{ "appointment.show.Commercial" | trans([],'appointment') }}</th>
+                <td>{{ appointment.commercial.nom }}</td>
+            </tr>
+            <tr>
+                <th>{{ "appointment.show.Prospect" | trans([],'appointment') }}</th>
+                <td>{{ appointment.prospect.name }}</td>
+            </tr>
+            <tr>
+                <th>{{ "appointment.show.CreatedAt" | trans([],'appointment') }}</th>
                 <td>{{ appointment.createdAt ? appointment.createdAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>UpdatedAt</th>
+                <th>{{ "appointment.show.UpdatedAt" | trans([],'appointment') }}</th>
                 <td>{{ appointment.updatedAt ? appointment.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
         </tbody>

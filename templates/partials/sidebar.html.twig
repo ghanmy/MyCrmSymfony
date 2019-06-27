@@ -1,5 +1,6 @@
 <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
 <aside class="app-sidebar">
+
     <div class="app-sidebar__user">
         <div>
             <p class="app-sidebar__user-name">{{ app.user.nom }}</p>
@@ -57,6 +58,20 @@
                 </li>
                 <li>
                     <a class="treeview-item" href="{{ path("calls_index") }}"><i class="icon fa fa-plus"></i>Nouveau appel</a>
+                </li>
+            </ul>
+        <li>
+        <li class="treeview">
+            <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-calendar-check-o"></i>
+                <span class="app-menu__label">Rendez-vous</span>
+                <i class="treeview-indicator fa fa-angle-right"></i>
+            </a>
+            <ul class="treeview-menu">
+                <li>
+                    <a class="treeview-item" href="{{ path("appointment_index") }}"><i class="icon fa fa-calendar-check-o"></i>Rendez-vous</a>
+                </li>
+                <li>
+                    <a class="treeview-item" href="{{ path("appointment_index") }}"><i class="icon fa fa-calendar-plus-o"></i>Nouveau RDV</a>
                 </li>
             </ul>
         <li>

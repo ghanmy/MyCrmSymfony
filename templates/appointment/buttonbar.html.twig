@@ -35,7 +35,7 @@
         function getRecord(id) {
             // alert(id);
             $.ajax({
-                url: 'http://127.0.0.1:8000/apponitment/' + id,
+                url: 'http://127.0.0.1:8000/appointment/' + id,
                 success: function (result) {
                     //alert(result);
                     $('#getdetails').html(result);

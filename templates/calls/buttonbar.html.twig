@@ -1,4 +1,7 @@
 
+<a class="px-1" href="{{ path('appointment_index', {'callid': row.id}) }}" target="_blank" data-toggle="tooltip" title="Ajouter un Rendez vous"><i class="fa fa-calendar-plus-o"> </i></a>
+
+
 <a class="px-1" onclick="return getRecord({{ row.id  }});" href="#" data-target="#calldetails" data-toggle="modal"><span class="fa fa-eye"></span></a>
 
 <a class="px-1" href="{{ path( 'calls_edit',{id:row.id}) }}"><span class="fa fa-edit"></span></a>

@@ -18,9 +18,15 @@
                 <td>{{ call.prospect.name }}</td>
             </tr>
             <tr>
+                <th>Tel</th>
+                <td>{{ call.prospect.tel }}</td>
+            </tr>
+            {% if call.contact.firstname is defined %}
+            <tr>
                 <th>Contact Prospect</th>
                 <td>{{ call.contact.firstname }}</td>
             </tr>
+            {% endif %}
             <tr>
                 <th>Durée d'appel</th>
                 <td>{{ call.duration }}

@@ -45,6 +45,46 @@
     {{ parent() }}
     <script src="{{ asset('dist/js/plugins/select2.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+    <script src="{{ asset('dist/js/plugins/gijgo.min.js') }}"></script>
+    <script>
+        function formatDate(date) {
+            var d = new Date(date),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+
+            if (month.length < 2) month = '0' + month;
+            if (day.length < 2) day = '0' + day;
+
+            return [day, month, year].join('-');
+        }
+        function formatTime(date) {
+            var d = new Date(date),
+                hours = '' + d.getHours(),
+                minutes = '' + d.getDate();
+
+            return [hours, minutes].join(':');
+        }
+        jQuery(document).ready(function() {
+            var date = new Date();
+            var today = new Date(date.getFullYear(), date.getMonth(), date.getDate(),date.getHours(),date.getMinutes());
+            $('.meetingdate').datepicker(
+                {
+                    format: 'dd-mm-yyyy',
+                    uiLibrary: 'bootstrap4',
+                    minDate: function() {
+                        var date = new Date();
+                        date.setDate(date.getDate());
+                        return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+                    }
+                });
+
+            $('.meetingtime').timepicker(
+                {
+                    uiLibrary: 'bootstrap4',
+                });
+        });
+    </script>
     <script>
 
         $(document).ready(function() {

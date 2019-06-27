@@ -84,6 +84,11 @@
                 {
                     format: 'dd-mm-yyyy',
                     uiLibrary: 'bootstrap4',
+                    minDate: function() {
+                        var date = new Date();
+                        date.setDate(date.getDate());
+                        return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+                    }
                 });
             $('.calltime').timepicker(
                 {
@@ -99,15 +104,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('.select2tags').select2();
             $('#listcalls').initDataTables({{ datatable_settings(datatable) }}, {
                 buttons: [
                     'copy',
                     { extend: 'pdf', title: 'domains'},
                     { extend: 'print' }
                 ]});
-        });
-        $(document).ready(function() {
             $('.select2tags').select2();
             $('#calls_prospect').change();
             $('.as-form').on('click',function(){
