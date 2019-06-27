@@ -78,6 +78,8 @@ class ProspectsRepository extends ServiceEntityRepository
             $query = $query->andWhere('u.email LIKE :prospectemail')
                 ->setParameter('prospectemail', '%'.$search->getEmail().'%');
 
+      //  $query->setMaxResults( 3);
+
         return $query->getQuery();
     }
 
