@@ -77,4 +77,15 @@ class UserRepository extends ServiceEntityRepository
             ;
     }
 
+    public function findByRoleIfActive($value)
+    {
+        $role= serialize(array($value));
+        return $this->createQueryBuilder('u')
+            ->where('u.isActive = 1')
+            ->andWhere('u.roles = :val')
+            ->setParameter('val',$role)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }
