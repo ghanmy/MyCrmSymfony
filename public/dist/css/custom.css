@@ -102,3 +102,14 @@ body{font-size: 10pt;color:#333;}
 .btn-outline-secondary {
     border: 1px solid #ced4da;
 }
+.contacts li:not(:last-child) {
+     list-style: none;
+     border: 1px solid #ccc;
+     margin-top: 10px;
+     padding-top: 10px;
+ }
+.contacts li:last-child {
+    list-style: none;
+    margin-top: 10px;
+    padding-top: 10px;
+}

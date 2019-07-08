@@ -1,4 +1,9 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+
+<div class="col-sm-3"> {{ form_row(form.firstname) }}</div>
+<div class="col-sm-3"> {{ form_row(form.lastname) }}</div>
+<div class="col-sm-3"> {{ form_row(form.email) }}</div>
+<div class="col-sm-3"> {{ form_row(form.adress) }}</div>
+<div class="col-sm-3"> {{ form_row(form.sex) }}</div>
+<div class="col-sm-3"> {{ form_row(form.telbureau) }}</div>
+<div class="col-sm-3"> {{ form_row(form.telmobile1) }}</div>
+<div class="col-sm-3"> {{ form_row(form.telmobile2) }}</div>

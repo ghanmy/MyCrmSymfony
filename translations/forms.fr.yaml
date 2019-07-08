@@ -4,7 +4,7 @@ ROLE_ADMIN: Admin
 ROLE_COMMERCIAL: Commerciale
 ROLE_TELEOPERATOR: Téléopérateur
 Tvacode: Code TVA
-Name: Raison sciale
+Name: Raison sociale
 Address: Adresse
 Firstname: Nom
 Lastname: Prénom
@@ -13,6 +13,12 @@ MeetingTime: Temps
 MeetingPlace: Lieu
 CreatedAt: Date de création
 UpdatedAt: Dernière modification
+Type: Secteur d'activité
+Tel: Téléphone
+Urlsiteweb: Site Web
+Telbureau: Télephone Bureau
+Telmobile1: Mobile 1
+Telmobile2: Mobile 2
 
 #translation of dtables columns
 dt:

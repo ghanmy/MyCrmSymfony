@@ -43,13 +43,13 @@
         <thead class="thead-dark">
             <tr>
                 <th>Id</th>
-                <th>Name</th>
+                <th>Nom</th>
                 <th>Email</th>
-                <th>Type</th>
-                <th>Address</th>
-                <th>Tvacode</th>
-                <th>Createdat</th>
-                <th>actions</th>
+                <th>Activité</th>
+                <th>Addresse</th>
+                <th>Code TVA</th>
+                <th>Date de création</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -58,9 +58,9 @@
                 <td>{{ prospect.id }}</td>
                 <td>{{ prospect.name }}</td>
                 <td>{{ prospect.email }}</td>
-                <td>{{ prospect.type }}</td>
+                <td>{{ prospect.activityArea.label }}</td>
                 <td>{{ prospect.address }}</td>
-                <td>{{ prospect.tvacode }}</td>
+                <td>{{ prospect.address }}</td>
                 <td>{{ prospect.createdat | date("m/d/Y")}}</td>
                 <td>
                     <a  class="px-1" href="{{ path('prospect_edit', {'id': prospect.id}) }}" data-toggle="tooltip" title="Editer"><i class="fa fa-edit"> </i></a>

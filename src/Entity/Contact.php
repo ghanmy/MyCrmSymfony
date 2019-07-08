@@ -59,15 +59,15 @@ class Contact
      * @ORM\Column(type="string", length=20)
      * @Assert\NotBlank()
      */
-    private $tel1;
+    private $telbureau;
     /**
      * @ORM\Column(type="string", length=20)
      */
-    private $tel2;
+    private $telmobile1;
     /**
      * @ORM\Column(type="string", length=20)
      */
-    private $tel3;
+    private $telmobile2;
     /**
      * @ORM\Column(name="createdat", type="datetime")
      */
@@ -143,40 +143,40 @@ class Contact
         return $this;
     }
 
-    public function setTel1(?string $tel1)
+    public function setTelBureau(?string $telbureau)
     {
-        $this->tel1 = $tel1;
+        $this->telbureau = $telbureau;
 
         return $this;
     }
 
-    public function getTel1()
+    public function getTelBureau()
     {
-        return $this->tel1;
+        return $this->telbureau;
     }
 
-    public function setTel2(?string $tel2)
+    public function setTelMobile1(?string $telmobile1)
     {
-        $this->tel2 = $tel2;
+        $this->telmobile1 = $telmobile1;
 
         return $this;
     }
 
-    public function getTel2()
+    public function getTelMobile1()
     {
-        return $this->tel2;
+        return $this->telmobile1;
     }
 
-    public function setTel3(?string $tel3)
+    public function setTelMobile2(?string $telmobile2)
     {
-        $this->tel3 = $tel3;
+        $this->telmobile2 = $telmobile2;
 
         return $this;
     }
 
-    public function getTel3()
+    public function getTelMobile2()
     {
-        return $this->tel3;
+        return $this->telmobile2;
     }
 
     public function setCreatedat(Datetime $createdat)

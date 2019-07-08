@@ -13,11 +13,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Prospect
 {
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $user;
 
     /**
      * @ORM\Id()
@@ -27,11 +22,21 @@ class Prospect
     private $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+    /**
+     * @ORM\Column(name="situation", type="string")
+     */
+    private $situation;
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $name;
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank
      * @Assert\Email(
      *     message = "L'email '{{ value }}' n'est pas un email valide."
@@ -41,13 +46,7 @@ class Prospect
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     *
-     */
-    private $type;
-
-    /**
-     * @ORM\Column(type="string", length=255,nullable=true)
+     * @ORM\Column(type="string", length=191,nullable=true)
      */
     private $address;
 
@@ -60,7 +59,7 @@ class Prospect
     /**
      * @ORM\Column(type="string", length=255,nullable=true)
      */
-    private $tvacode;
+    private $urlsiteweb;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Contact",mappedBy="prospect",cascade={"persist", "remove"}, orphanRemoval=true)
@@ -76,6 +75,12 @@ class Prospect
      * @ORM\OneToMany(targetEntity="App\Entity\Appointment", mappedBy="prospect",cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $appointments;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Activityarea")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $activityArea;
 
     /**
      * @ORM\Column(name="createdat", type="datetime")
@@ -98,6 +103,17 @@ class Prospect
     public function getId(): ?int
     {
         return $this->id;
+    }
+    public function getSituation(): ?string
+    {
+        return $this->situation;
+    }
+
+    public function setSituation(?string $situation): self
+    {
+        $this->situation = $situation;
+
+        return $this;
     }
 
     public function getName(): ?string
@@ -124,17 +140,6 @@ class Prospect
         return $this;
     }
 
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): self
-    {
-        $this->type = $type;
-
-        return $this;
-    }
 
     public function getAddress(): ?string
     {
@@ -148,14 +153,14 @@ class Prospect
         return $this;
     }
 
-    public function getTvacode(): ?string
+    public function getUrlSiteWeb(): ?string
     {
-        return $this->tvacode;
+        return $this->urlsiteweb;
     }
 
-    public function setTvacode(?string $tvacode): self
+    public function setUrlSiteWeb(?string $urlsiteweb): self
     {
-        $this->tvacode = $tvacode;
+        $this->urlsiteweb = $urlsiteweb;
 
         return $this;
     }
@@ -265,5 +270,17 @@ class Prospect
     public function removeAppointment(Appointment $appointment)
     {
         $this->appointment->removeElement($appointment);
+    }
+
+    public function setActivityArea(Activityarea $activityArea)
+    {
+        $this->activityArea = $activityArea;
+
+        return $this;
+    }
+
+    public function getActivityArea()
+    {
+        return $this->activityArea;
     }
 }

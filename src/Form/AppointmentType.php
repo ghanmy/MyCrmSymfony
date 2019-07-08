@@ -41,7 +41,7 @@ class AppointmentType extends AbstractType
     {
 
         $userRepository = $this->em->getRepository(User::class);
-        $commercials = $userRepository->findByRole('ROLE_COMMERCIAL');
+        $commercials = $userRepository->findByRoleIfActive('ROLE_COMMERCIAL');
 
         $builder
             ->add('meetingDate', DateType::class, [

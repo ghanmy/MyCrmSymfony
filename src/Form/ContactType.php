@@ -27,10 +27,16 @@ class ContactType extends AbstractType
                 'class'=>'checkbox-inline'
             ]
         ])
-        ->add('adress',TextType::class)
-        ->add('tel1',TextType::class)
-        ->add('tel2',TextType::class)
-        ->add('tel3',TextType::class);
+        ->add('adress',TextType::class,[
+            "required"=>false,
+        ])
+        ->add('telbureau',TextType::class)
+        ->add('telmobile1',TextType::class,[
+            "required"=>false,
+        ])
+        ->add('telmobile2',TextType::class,[
+            "required"=>false,
+        ]);
       //  ->add('createdat')
        //->add('prospect')
 }
